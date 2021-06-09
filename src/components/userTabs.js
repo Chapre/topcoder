@@ -57,7 +57,7 @@ const columns = [
 function UserTabs(){
     const [value, setValue] = React.useState(0);
     const handleChange = (event, newValue) => {setValue(newValue);};
-    const [selection, setSelection] = React.useState();
+    const [selection, setSelection] = React.useState([]);
     return(
         <div>
             <AppBar position="static">
@@ -72,7 +72,17 @@ function UserTabs(){
                     columns={columns} pageSize={5}
                     onSelectionModelChange={(e) => {
                         const selectedIDs = new Set(e.selectionModel);
-                        console.log(selectedIDs);
+                        var items =[];
+                        for (const element of selectedIDs) {
+                            var r = rows.find(x => x.id === element);
+                            if(r){
+                                items.push(r);
+                            }
+                        }
+
+                        var j=1/3;
+                        items.sort((a, b) => a.value/a.timeToMine - b.value/b.timeToMine);
+                        setSelection(items);
                       }}
                     checkboxSelection
                     onRowSelected={(e) => 
